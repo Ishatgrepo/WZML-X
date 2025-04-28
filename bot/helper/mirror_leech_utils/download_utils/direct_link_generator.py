@@ -718,10 +718,7 @@ def terabox(url, video_quality="HD Video", save_dir="HD_Video"):
 
     urls = [
         "https://ytshorts.savetube.me/api/v1/terabox-downloader",
-        f"https://teraboxvideodownloader.nepcoderdevs.workers.dev/?url={terabox_url}",
-        f"https://terabox.udayscriptsx.workers.dev/?url={terabox_url}",
-        f"https://mavimods.serv00.net/Mavialt.php?url={terabox_url}",
-        f"https://mavimods.serv00.net/Mavitera.php?url={terabox_url}",
+        f"https://teraboxdl.tellycloudapi.workers.dev/?url={terabox_url}",
     ]
 
     headers = {
@@ -736,6 +733,7 @@ def terabox(url, video_quality="HD Video", save_dir="HD_Video"):
         "Sec-Fetch-Site": "same-origin",
     }
 
+    response = None
     for base_url in urls:
         try:
             if "api/v1" in base_url:
@@ -753,14 +751,40 @@ def terabox(url, video_quality="HD Video", save_dir="HD_Video"):
     data = response.json()
     details = {"contents": [], "title": "", "total_size": 0}
 
-    for item in data["response"]:
-        title = item["title"]
-        resolutions = item.get("resolutions", {})
-        if zlink := resolutions.get(video_quality):
-            details["contents"].append(
-                {"url": zlink, "filename": title, "path": ospath.join(title, save_dir)}
-            )
+    # Handle new API response structure
+    if data.get("Success") and "Data" in data:
+        item = data["Data"]
+        title = item.get("FileName", "")
         details["title"] = title
+        details["total_size"] = item.get("FileSizebytes", 0)
+        
+        # Add available direct links
+        if direct_link := item.get("DirectLink"):
+            details["contents"].append({
+                "url": direct_link,
+                "filename": title,
+                "path": ospath.join(title, save_dir)
+            })
+        if direct_link2 := item.get("DirectLink2"):
+            details["contents"].append({
+                "url": direct_link2,
+                "filename": title,
+                "path": ospath.join(title, save_dir)
+            })
+    # Handle old API response structure
+    elif "response" in data:
+        for item in data["response"]:
+            title = item.get("title", "")
+            resolutions = item.get("resolutions", {})
+            if zlink := resolutions.get(video_quality):
+                details["contents"].append({
+                    "url": zlink,
+                    "filename": title,
+                    "path": ospath.join(title, save_dir)
+                })
+            details["title"] = title
+    else:
+        raise DirectDownloadLinkException("ERROR: Invalid API response structure")
 
     if not details["contents"]:
         raise DirectDownloadLinkException("ERROR: No valid download links found")
@@ -769,7 +793,6 @@ def terabox(url, video_quality="HD Video", save_dir="HD_Video"):
         return details["contents"][0]["url"]
 
     return details
-
 
 def filepress(url):
     with create_scraper() as session:
