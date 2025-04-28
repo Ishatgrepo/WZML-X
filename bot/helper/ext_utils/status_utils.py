@@ -224,7 +224,7 @@ async def get_readable_message(sid, is_user, page_no=1, status="All", page_step=
         msg += f"<b>{index + start_position}.</b> "
         msg += f"<b><i>{escape(f'{task.name()}')}</i></b>"
         if task.listener.subname:
-            msg += f"\n●<b>Sub Name</b> → <i>{task.listener.subname}</i>"
+            msg += f"\n● <b>Sub Name</b> → <i>{task.listener.subname}</i>"
         elapsed = time() - task.listener.message.date.timestamp()
 
         msg += f"\n\n<b>Task By {task.listener.message.from_user.mention(style='html')} </b> ( #ID{task.listener.message.from_user.id} )"
@@ -244,12 +244,12 @@ async def get_readable_message(sid, is_user, page_no=1, status="All", page_step=
             else:
                 subsize = ""
                 count = ""
-            msg += f"\n●<b>Processed</b> → <i>{task.processed_bytes()}{subsize} of {task.size()}</i>"
+            msg += f"\n● <b>Processed</b> → <i>{task.processed_bytes()}{subsize} of {task.size()}</i>"
             if count:
-                msg += f"\n●<b>Count:</b> → <b>{count}</b>"
-            msg += f"\n●<b>Status</b> → <b>{tstatus}</b>"
-            msg += f"\n●<b>Speed</b> → <i>{task.speed()}</i>"
-            msg += f"\n●<b>Time</b> → <i>{task.eta()} of {get_readable_time(elapsed + get_raw_time(task.eta()))} ( {get_readable_time(elapsed)} )</i>"
+                msg += f"\n● <b>Count:</b> → <b>{count}</b>"
+            msg += f"\n● <b>Status</b> → <b>{tstatus}</b>"
+            msg += f"\n● <b>Speed</b> → <i>{task.speed()}</i>"
+            msg += f"\n● <b>Time</b> → <i>{task.eta()} of {get_readable_time(elapsed + get_raw_time(task.eta()))} ( {get_readable_time(elapsed)} )</i>"
             if tstatus == MirrorStatus.STATUS_DOWNLOAD and (
                 task.listener.is_torrent or task.listener.is_qbit
             ):
@@ -270,7 +270,7 @@ async def get_readable_message(sid, is_user, page_no=1, status="All", page_step=
         msg += f"\n● <b>In Mode</b> → <i>{task.listener.mode[0]}</i>"
         msg += f"\n● <b>Out Mode</b> → <i>{task.listener.mode[1]}</i>"
         # TODO: Add Bt Sel
-        msg += f"\n<b>●Stop</b> → <i>/{BotCommands.CancelTaskCommand[1]}_{task.gid()}</i>\n\n"
+        msg += f"\n<b>● Stop</b> → <i>/{BotCommands.CancelTaskCommand[1]}_{task.gid()}</i>\n\n"
 
     if len(msg) == 0:
         if status == "All":
