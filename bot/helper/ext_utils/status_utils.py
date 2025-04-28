@@ -21,21 +21,20 @@ SIZE_UNITS = ["B", "KB", "MB", "GB", "TB", "PB"]
 
 
 class MirrorStatus:
-    STATUS_UPLOAD = "Upload"
-    STATUS_DOWNLOAD = "Download"
-    STATUS_CLONE = "Clone"
-    STATUS_QUEUEDL = "QueueDl"
-    STATUS_QUEUEUP = "QueueUp"
-    STATUS_PAUSED = "Pause"
-    STATUS_ARCHIVE = "Archive"
-    STATUS_EXTRACT = "Extract"
-    STATUS_SPLIT = "Split"
-    STATUS_CHECK = "CheckUp"
-    STATUS_SEED = "Seed"
-    STATUS_SAMVID = "SamVid"
-    STATUS_CONVERT = "Convert"
-    STATUS_FFMPEG = "FFmpeg"
-
+    STATUS_UPLOAD = "📤 Upload"
+    STATUS_DOWNLOAD = "📥 Download"
+    STATUS_CLONE = "📂 Clone"
+    STATUS_QUEUEDL = "⏳ QueueDl"
+    STATUS_QUEUEUP = "⏳ QueueUp"
+    STATUS_PAUSED = "⏸️ Pause"
+    STATUS_ARCHIVE = "📦 Archive"
+    STATUS_EXTRACT = "📂 Extract"
+    STATUS_SPLIT = "✂️ Split"
+    STATUS_CHECK = "✅ CheckUp"
+    STATUS_SEED = "🌱 Seed"
+    STATUS_SAMVID = "🎞️ SamVid"
+    STATUS_CONVERT = "🔄 Convert"
+    STATUS_FFMPEG = "🎬 FFmpeg"
 
 class EngineStatus:
     def __init__(self):
@@ -186,17 +185,17 @@ def speed_string_to_bytes(size_text: str):
         size += float(size_text.split("b")[0])
     return size
 
-
 def get_progress_bar_string(pct):
     pct = float(str(pct).strip("%"))
     p = min(max(pct, 0), 100)
     cFull = int(p // 8)
-    p_str = "⬢" * cFull
-    p_str += "⬡" * (12 - cFull)
-    return f"[{p_str}]"
+    p_str = "🥚" * cFull
+    p_str += "🍗" * (12 - cFull)
+    return f'<p><a href="https://t.me/TELLYMIRROR">{p_str}</a></p>'
 
 
 async def get_readable_message(sid, is_user, page_no=1, status="All", page_step=1):
+    msg = '<blockquote><a href="https://t.me/TELLYMIRROR"><b>⚡ POWERED BY TELLY MIRROR 🤖</b></a></blockquote>'
     msg = ""
     button = None
 
